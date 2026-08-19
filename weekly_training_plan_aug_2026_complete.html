@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weekly Training Plan</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#e9eefc;
+      --muted:#b8c2e6;
+      --border:rgba(255,255,255,.12);
+      --accent:#ff7a18;
+      --accent-soft:rgba(255,122,24,.12);
+      --panel-soft:rgba(255,255,255,.035);
+    }
+
+    *{box-sizing:border-box}
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:40px auto;
+      padding:0 20px 40px;
+    }
+
+    .hero{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border-radius:14px;
+      padding:28px 30px;
+      margin-bottom:22px;
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:32px;
+      letter-spacing:.2px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:24px;
+      margin-bottom:20px;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
+
+    h2{
+      margin-top:0;
+      font-size:22px;
+      color:var(--text);
+      padding-bottom:10px;
+      border-bottom:1px solid var(--border);
+    }
+
+    h2::before{
+      content:"";
+      display:inline-block;
+      width:9px;
+      height:9px;
+      margin-right:10px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 3px rgba(255,122,24,.18);
+      vertical-align:2px;
+    }
+
+    h3{
+      margin:22px 0 8px;
+      color:var(--text);
+    }
+
+    p, li{
+      color:var(--muted);
+    }
+
+    strong{
+      color:var(--text);
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin-top:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:12px;
+    }
+
+    th,td{
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      vertical-align:top;
+      text-align:left;
+    }
+
+    th{
+      background:rgba(255,255,255,.055);
+      color:var(--text);
+      font-size:13px;
+      letter-spacing:.15px;
+    }
+
+    td{
+      color:var(--muted);
+      background:rgba(255,255,255,.018);
+    }
+
+    td:first-child{
+      color:var(--text);
+      white-space:nowrap;
+    }
+
+    tr:last-child td{
+      border-bottom:none;
+    }
+
+    tr.schedule-link{
+      cursor:pointer;
+      transition:background .15s ease, transform .15s ease;
+    }
+
+    tr.schedule-link:hover td{
+      background:rgba(255,255,255,.045);
+    }
+
+    tr.schedule-link:focus{
+      outline:none;
+    }
+
+    .day-link{
+      color:var(--text);
+      text-decoration:none;
+      display:block;
+    }
+
+    section[id]{
+      scroll-margin-top:20px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,122,24,.3);
+      background:var(--accent-soft);
+      color:#ffab66;
+      font-size:12px;
+      font-weight:700;
+      margin-left:6px;
+    }
+
+    .note{
+      border:1px solid rgba(255,122,24,.28);
+      border-left:4px solid var(--accent);
+      padding:13px 16px;
+      background:var(--accent-soft);
+      border-radius:10px;
+      color:var(--muted);
+    }
+
+    .note strong{
+      color:var(--accent);
+    }
+
+    ul{
+      margin-top:8px;
+      padding-left:22px;
+    }
+
+    li{
+      margin-bottom:7px;
+    }
+
+    .footer{
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      margin-top:28px;
+      opacity:.85;
+    }
+
+    @media(max-width:700px){
+      .wrap{
+        margin:20px auto;
+        padding:0 12px 28px;
+      }
+
+      .hero{
+        padding:22px 20px;
+      }
+
+      .hero h1{
+        font-size:26px;
+      }
+
+      .card{
+        padding:18px;
+      }
+
+      table,thead,tbody,tr,th,td{
+        display:block;
+      }
+
+      thead{
+        display:none;
+      }
+
+      table{
+        border:none;
+      }
+
+      tr{
+        border:1px solid var(--border);
+        background:rgba(255,255,255,.02);
+        border-radius:10px;
+        padding:8px 10px;
+        margin-bottom:10px;
+      }
+
+      td{
+        border:none;
+        background:transparent;
+        padding:6px 4px;
+      }
+
+      td:before{
+        font-weight:700;
+        display:block;
+        color:var(--text);
+        font-size:12px;
+        margin-bottom:2px;
+      }
+
+      td:nth-child(1):before{content:"Day"}
+      td:nth-child(2):before{content:"Session"}
+      td:nth-child(3):before{content:"Purpose"}
+    }
+
+
+    .back-to-schedule{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      border:2px solid rgba(255,122,24,.5);
+      background:rgba(18,26,51,.94);
+      color:var(--accent);
+      text-decoration:none;
+      font-size:30px;
+      font-weight:900;
+      line-height:.9;
+      box-shadow:0 7px 20px rgba(0,0,0,.38);
+      backdrop-filter:blur(6px);
+      z-index:1000;
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+
+    .back-to-schedule:hover{
+      transform:translateY(-2px);
+      background:rgba(255,122,24,.14);
+      border-color:var(--accent);
+    }
+
+    .back-to-schedule:focus{
+      outline:2px solid var(--accent);
+      outline-offset:3px;
+    }
+
+    @media print{
+      :root{
+        --bg:#ffffff;
+        --card:#ffffff;
+        --text:#111827;
+        --muted:#374151;
+        --border:#e5e7eb;
+        --accent:#f97316;
+        --accent-soft:#fff7ed;
+      }
+
+      body{background:#fff}
+
+      .back-to-schedule{display:none !important;}
+
+      .hero,.card{
+        background:#fff !important;
+        box-shadow:none !important;
+      }
+
+      td,th{
+        background:#fff !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Weekly Training Plan</h1>
+      <p>Current cycling, strength and kitesurf-preparation framework — August 2026</p>
+    </section>
+
+    <section class="card" id="training-schedule">
+      <h2>Weekly Schedule</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Session</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='monday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='monday';}">
+            <td><a class="day-link" href="#monday"><strong>Monday AM</strong></a></td>
+            <td>Intervals on the Roubaix during the commute</td>
+            <td>Main high-intensity cycling session of the week.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='monday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='monday';}">
+            <td><a class="day-link" href="#monday"><strong>Monday PM</strong></a></td>
+            <td>Easy commute home</td>
+            <td>Recovery / aerobic riding only.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='tuesday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='tuesday';}">
+            <td><a class="day-link" href="#tuesday"><strong>Tuesday</strong></a></td>
+            <td>Upper body + kite leg/knee conditioning</td>
+            <td>Strength plus preparation for the coming kitesurf season.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='wednesday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='wednesday';}">
+            <td><a class="day-link" href="#wednesday"><strong>Wednesday AM + PM</strong></a></td>
+            <td>Fixie commute</td>
+            <td>General aerobic volume; normal riding rather than structured training.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='thursday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='thursday';}">
+            <td><a class="day-link" href="#thursday"><strong>Thursday</strong></a></td>
+            <td>Upper body + kite leg/knee conditioning</td>
+            <td>Second strength and conditioning session.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='friday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='friday';}">
+            <td><a class="day-link" href="#friday"><strong>Friday</strong></a></td>
+            <td>Sweet spot <em>or</em> Reabold Hill work</td>
+            <td>Controlled cycling quality focused on sustained power, climbing strength and muscular endurance.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='saturday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='saturday';}">
+            <td><a class="day-link" href="#saturday"><strong>Saturday</strong></a></td>
+            <td>40–60 km endurance ride</td>
+            <td>Mostly comfortable aerobic riding rather than another hard workout.</td>
+          </tr>
+          <tr class="schedule-link" tabindex="0" onclick="location.hash='sunday'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='sunday';}">
+            <td><a class="day-link" href="#sunday"><strong>Sunday</strong></a></td>
+            <td>Rest / recovery</td>
+            <td>Absorb the week's training load.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="monday">
+      <h2>Monday — Main Hard Cycling Day</h2>
+      <p>The Monday morning session can be done in either of two ways:</p>
+      <ul>
+        <li><strong>Structured:</strong> interval training on the Roubaix during the morning commute.</li>
+        <li><strong>Unstructured:</strong> a hard fixie ride with a friend involving repeated sprints, surges and hard riding.</li>
+      </ul>
+      <div class="note">
+        <strong>Rule:</strong> the hard fixie ride replaces the structured interval session — it does not get added on top. The Monday afternoon commute should remain easy.
+      </div>
+    </section>
+
+    <section class="card" id="tuesday">
+      <h2>Tuesday — Strength + Knee Capacity</h2>
+      <p><strong>Duration:</strong> approximately 50–60 minutes.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Sets × Reps</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pull-ups / Lat Pulldown</strong></td>
+            <td>3 × 6–10</td>
+            <td>Back and lat strength for kite control.</td>
+          </tr>
+          <tr>
+            <td><strong>Dumbbell or Bench Press</strong></td>
+            <td>3 × 6–10</td>
+            <td>Chest and triceps strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Seated Cable Row</strong></td>
+            <td>3 × 8–12</td>
+            <td>Upper-back strength and posture.</td>
+          </tr>
+          <tr>
+            <td><strong>Dumbbell Shoulder Press</strong></td>
+            <td>2–3 × 8–10</td>
+            <td>Shoulder strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Bulgarian Split Squat</strong></td>
+            <td>3 × 8 each leg</td>
+            <td>Single-leg strength, glute strength and knee control.</td>
+          </tr>
+          <tr>
+            <td><strong>Romanian Deadlift (RDL)</strong></td>
+            <td>3 × 8–10</td>
+            <td>Hamstrings, glutes and posterior-chain strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Step-downs</strong></td>
+            <td>2–3 × 8–10 each leg</td>
+            <td>Eccentric knee control.</td>
+          </tr>
+          <tr>
+            <td><strong>Standing Calf Raises</strong></td>
+            <td>3 × 12–15</td>
+            <td>Calf and ankle resilience.</td>
+          </tr>
+          <tr>
+            <td><strong>Pallof Press</strong></td>
+            <td>2–3 × 10 each side</td>
+            <td>Anti-rotation and trunk control.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Tuesday emphasis</h3>
+      <p>The Tuesday session carries the greater lower-body strength load of the two gym days. The Bulgarian split squat is a key exercise because it develops unilateral quad and glute strength, knee stability and hip control.</p>
+      <div class="note">
+        <strong>Intensity:</strong> keep the main strength work around RPE 7–8 — hard, but generally stop with about 2–3 good repetitions still available. Do not train to failure.
+      </div>
+    </section>
+
+
+    <section class="card">
+      <h2>Exercise Guide — Tuesday</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>How to do it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pull-up / Lat Pulldown</strong></td>
+            <td>Think about pulling your elbows down toward your ribs rather than pulling with your hands. Keep the chest up, shoulders away from the ears, and lower under control.</td>
+          </tr>
+          <tr>
+            <td><strong>Dumbbell / Bench Press</strong></td>
+            <td>Keep the shoulder blades lightly pulled back and feet planted. Lower the weight to chest level with the elbows roughly 30–60° from the body, then press smoothly back up.</td>
+          </tr>
+          <tr>
+            <td><strong>Seated Cable Row</strong></td>
+            <td>Sit tall, brace the trunk and pull the handle toward the lower ribs. Finish by drawing the shoulder blades back rather than leaning the torso backwards.</td>
+          </tr>
+          <tr>
+            <td><strong>Dumbbell Shoulder Press</strong></td>
+            <td>Start with the weights around shoulder height. Brace the stomach and press overhead without excessively arching the lower back.</td>
+          </tr>
+          <tr>
+            <td><strong>Bulgarian Split Squat</strong></td>
+            <td>Place the rear foot on a bench or step. Keep the front foot far enough forward to descend comfortably. Lower mostly straight down, keep the front knee tracking in line with the toes, then drive through the front leg to stand.</td>
+          </tr>
+          <tr>
+            <td><strong>Romanian Deadlift (RDL)</strong></td>
+            <td>Keep a slight bend in the knees and push the hips backwards while maintaining a neutral back. Lower until you feel a strong hamstring stretch, then squeeze the glutes and bring the hips forward. It is a hip-hinge movement rather than a squat.</td>
+          </tr>
+          <tr>
+            <td><strong>Step-down</strong></td>
+            <td>Stand on a step on one leg. Slowly lower the opposite heel toward the floor by bending the supporting knee, then push back up. Keep the supporting knee aligned over the foot rather than allowing it to collapse inward.</td>
+          </tr>
+          <tr>
+            <td><strong>Standing Calf Raise</strong></td>
+            <td>Rise as high as possible onto the ball of the foot, pause briefly, then lower slowly through the full available range.</td>
+          </tr>
+          <tr>
+            <td><strong>Pallof Press</strong></td>
+            <td>Stand sideways to a band or cable. Hold it against the chest, extend the arms straight ahead and resist the pull trying to rotate your torso. Bring the hands back without twisting.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="wednesday">
+      <h2>Wednesday — Aerobic Fixie Commute</h2>
+      <p>Ride the fixie for the normal commute in both directions. This is primarily aerobic volume rather than a structured training session.</p>
+      <div class="note">
+        <strong>Wednesday principle:</strong> ride normally and keep the overall effort controlled. Avoid deliberately turning the commute into another interval day.
+      </div>
+    </section>
+
+    <section class="card" id="thursday">
+      <h2>Thursday — Kite-Specific Control + Upper Body</h2>
+      <p><strong>Duration:</strong> approximately 45–55 minutes. The lower-body work should leave less residual fatigue than Tuesday so the legs are ready for Friday cycling.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Sets × Reps</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lat Pulldown / Pull-ups</strong></td>
+            <td>3 × 8–10</td>
+            <td>Pulling strength for kite control.</td>
+          </tr>
+          <tr>
+            <td><strong>Incline Dumbbell Press</strong></td>
+            <td>3 × 8–10</td>
+            <td>Upper-body pushing strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-arm Cable Row</strong></td>
+            <td>3 × 10 each side</td>
+            <td>Back strength plus anti-rotation control.</td>
+          </tr>
+          <tr>
+            <td><strong>Face Pulls / Reverse Fly</strong></td>
+            <td>2–3 × 12–15</td>
+            <td>Shoulder health and upper-back strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Squat to Bench</strong></td>
+            <td>3 × 8 each leg</td>
+            <td>Knee control and single-leg strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Lateral Step-down</strong></td>
+            <td>3 × 8 each leg</td>
+            <td>Side-to-side knee stability and control.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Romanian Deadlift</strong></td>
+            <td>2–3 × 8 each leg</td>
+            <td>Balance, glute and hamstring strength.</td>
+          </tr>
+          <tr>
+            <td><strong>Lateral Band Walk</strong></td>
+            <td>2 × 10–15 each way</td>
+            <td>Glute medius strength and knee tracking.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Calf Raise</strong></td>
+            <td>2 × 12 each leg</td>
+            <td>Ankle and lower-leg control.</td>
+          </tr>
+          <tr>
+            <td><strong>Cable Chop / Lift</strong></td>
+            <td>2–3 × 10 each side</td>
+            <td>Rotational trunk strength.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Thursday emphasis</h3>
+      <p>Thursday focuses more on control, stability and lateral movement than heavy leg loading. Cycling provides plenty of forward/backward knee loading, while kitesurfing places greater demands on lateral stability, rotation and single-leg control.</p>
+      <div class="note">
+        <strong>Movement quality:</strong> use controlled reps, keep the knee tracking cleanly, maintain a stable pelvis and reduce the load or range if the knee collapses inward.
+      </div>
+    </section>
+
+
+    <section class="card">
+      <h2>Exercise Guide — Thursday</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>How to do it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lat Pulldown / Pull-up</strong></td>
+            <td>Use the same controlled technique as Tuesday: pull the elbows down, keep the chest up and avoid shrugging the shoulders.</td>
+          </tr>
+          <tr>
+            <td><strong>Incline Dumbbell Press</strong></td>
+            <td>Use the same basic pressing technique as a bench press, but on a moderately inclined bench. Avoid setting the bench so steep that it becomes mostly a shoulder press.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-arm Cable Row</strong></td>
+            <td>Keep the torso square and pull one hand toward the ribs while deliberately preventing the body from rotating. This trains the trunk as well as the back.</td>
+          </tr>
+          <tr>
+            <td><strong>Face Pull / Reverse Fly</strong></td>
+            <td>For a face pull, pull the rope toward the face with the elbows high and separate the hands. For a reverse fly, open the arms outward with a slight elbow bend. Keep the load light and controlled.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Squat to Bench</strong></td>
+            <td>Stand on one leg in front of a bench or chair. Slowly sit backwards and down until you lightly touch it, then stand again using the same leg. Use a higher bench if needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Lateral Step-down</strong></td>
+            <td>Stand sideways on a step with one foot hanging off the side. Slowly bend the supporting leg until the free heel approaches the floor, then return to standing while keeping the knee tracking cleanly.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Romanian Deadlift</strong></td>
+            <td>Stand on one leg and hinge forward from the hip while the other leg extends behind you. Keep the hips relatively square and return by squeezing the supporting-side glute. Balance and control matter more than depth.</td>
+          </tr>
+          <tr>
+            <td><strong>Lateral Band Walk</strong></td>
+            <td>Place a band around the knees or ankles, hold a slight squat position and take controlled sideways steps while keeping the feet roughly parallel and the knees from collapsing inward.</td>
+          </tr>
+          <tr>
+            <td><strong>Single-leg Calf Raise</strong></td>
+            <td>Rise onto the ball of one foot, pause at the top and lower slowly. Hold something lightly for balance if needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Cable Chop / Lift</strong></td>
+            <td>Move the hands diagonally across the body against resistance while keeping the trunk controlled. A chop moves high to low; a lift moves low to high.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Knee-control rule:</strong> slow, stable movement beats heavier loading. If the knee collapses inward, reduce the load, range or difficulty.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Kite-Season Progression</h2>
+      <p>For the first 4–6 weeks, emphasise strength and control using mostly 8–12 controlled repetitions. As kite season approaches, gradually introduce more dynamic work such as:</p>
+      <ul>
+        <li>Lateral hops.</li>
+        <li>Skater bounds.</li>
+        <li>Small single-leg hops.</li>
+        <li>Jump-and-stick landings.</li>
+        <li>Rotational landing-control drills.</li>
+      </ul>
+      <p>A useful later-stage drill is to hop sideways, land, stabilise and hold the landing for about two seconds.</p>
+      <div class="note">
+        <strong>Priority:</strong> build the strength and control first. Dynamic and explosive work comes later as the kitesurf season gets closer.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Training Acronyms</h2>
+      <p><strong>RDL</strong> = Romanian Deadlift &nbsp;•&nbsp; <strong>RPE</strong> = Rate of Perceived Exertion &nbsp;•&nbsp; <strong>DOMS</strong> = Delayed Onset Muscle Soreness.</p>
+    </section>
+
+    <section class="card" id="friday">
+      <h2>Friday — Sweet Spot or Reabold Work</h2>
+
+      <h3>Option A: Sweet Spot</h3>
+      <p>With a working FTP of approximately <strong>240 W</strong>:</p>
+      <ul>
+        <li>Warm up normally.</li>
+        <li><strong>2 × 15 minutes at roughly 210–225 W</strong>.</li>
+        <li>About 5 minutes easy between efforts.</li>
+        <li>Progress toward <strong>2 × 20 minutes</strong> as fitness develops.</li>
+        <li>A practical starting target is around <strong>215–220 W</strong>.</li>
+      </ul>
+      <p>The aim is sustained quality work without turning the session into an all-out time trial.</p>
+
+      <h3>Option B: Reabold Hill</h3>
+      <ul>
+        <li><strong>4–6 hill repeats</strong>.</li>
+        <li>Use the descent / repositioning as recovery.</li>
+        <li>Keep the first ascent controlled.</li>
+        <li>Aim for consistency across repeats rather than destroying the first one.</li>
+        <li>Expect much of the climbing effort to sit around FTP or somewhat above it, approximately <strong>235–265 W</strong>, depending on gradient and duration.</li>
+        <li>Track average power, ascent time, cadence and how much these deteriorate across the set.</li>
+      </ul>
+      <div class="note">
+        <strong>Friday principle:</strong> choose sweet spot for sustained aerobic power development, or Reabold repeats for climbing strength and threshold work. Do not do both.
+      </div>
+    </section>
+
+    <section class="card" id="saturday">
+      <h2>Saturday — Endurance Ride</h2>
+      <p>Ride roughly <strong>40–60 km</strong>, mostly at comfortable endurance intensity. The aim is aerobic volume and an enjoyable longer ride rather than another hard training session.</p>
+      <div class="note">
+        <strong>Saturday principle:</strong> keep it predominantly steady and conversational. This is not intended to become a third quality cycling day.
+      </div>
+    </section>
+
+    <section class="card" id="sunday">
+      <h2>Sunday — Rest / Recovery</h2>
+      <p>Use Sunday primarily for recovery so the week's cycling and strength work can be absorbed before Monday's next hard session.</p>
+      <div class="note">
+        <strong>Sunday principle:</strong> rest is part of the programme, not a missed training opportunity.
+      </div>
+    </section>
+
+
+    <section class="card">
+      <h2>Can This Be Done With Bodyweight?</h2>
+      <p><strong>Mostly, yes.</strong> The lower-body work can be very effective with bodyweight because many of the exercises are single-leg movements. A small amount of simple equipment makes the programme much more complete.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Bodyweight?</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Bulgarian Split Squat</strong></td><td>Yes</td><td>Excellent bodyweight exercise and easy to progress by increasing range, control or load later.</td></tr>
+          <tr><td><strong>Step-down / Lateral Step-down</strong></td><td>Yes</td><td>Very effective without added load.</td></tr>
+          <tr><td><strong>Single-leg Squat</strong></td><td>Yes</td><td>Use bench height to control difficulty.</td></tr>
+          <tr><td><strong>Single-leg RDL</strong></td><td>Yes</td><td>Bodyweight is useful for balance and control; load can be added later.</td></tr>
+          <tr><td><strong>Calf Raises</strong></td><td>Yes</td><td>Progress to single-leg versions when two-leg raises become easy.</td></tr>
+          <tr><td><strong>Romanian Deadlift</strong></td><td>Partly</td><td>Bodyweight works initially, but extra resistance will eventually be useful.</td></tr>
+          <tr><td><strong>Lateral Band Walk</strong></td><td>No</td><td>Needs a small resistance band.</td></tr>
+          <tr><td><strong>Pallof Press</strong></td><td>No</td><td>Needs a band or cable.</td></tr>
+          <tr><td><strong>Cable Chop / Lift</strong></td><td>No</td><td>Can be done with a resistance band instead of a cable machine.</td></tr>
+          <tr><td><strong>Upper-body Pressing</strong></td><td>Yes</td><td>Push-ups, decline push-ups and pike push-ups can replace dumbbell pressing.</td></tr>
+          <tr><td><strong>Upper-body Pulling</strong></td><td>Mostly</td><td>You still need something to pull against: a pull-up bar, rings, TRX-style straps or resistance bands.</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <strong>Minimal home setup:</strong> a few resistance bands plus a safe pull-up point would cover almost the entire programme.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Kitesurf Season Adjustments</h2>
+      <p>Once the wind becomes reliable and afternoon kitesurf sessions return, kitesurfing becomes part of the training load rather than something added on top of the existing plan.</p>
+
+      <div class="note">
+        <strong>Main rule:</strong> a proper kitesurf session replaces or reduces another lower-body or high-intensity session. It should not simply be stacked on top of everything else.
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Kite Afternoon</th>
+            <th>How to Adjust the Day</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Monday</strong></td>
+            <td>You can kite after the morning interval session, but if you know a strong afternoon session is likely, keep the morning intervals slightly more controlled. Tuesday lower-body work should then be lighter.</td>
+          </tr>
+          <tr>
+            <td><strong>Tuesday</strong></td>
+            <td>A good day to kite. Complete the upper-body work and reduce the leg/knee section to roughly half volume if the afternoon session will be substantial.</td>
+          </tr>
+          <tr>
+            <td><strong>Wednesday</strong></td>
+            <td>Kiting after the fixie commute is fine. If it becomes a hard or long kite session, make Thursday's lower-body work very light or upper-body only.</td>
+          </tr>
+          <tr>
+            <td><strong>Thursday</strong></td>
+            <td>Potentially the best pairing. Do upper body plus a short knee activation/control session earlier, then kite later. Avoid heavy leg fatigue before going on the water.</td>
+          </tr>
+          <tr>
+            <td><strong>Friday</strong></td>
+            <td>A proper kite session can replace sweet spot or Reabold work entirely. Do not feel obliged to complete both.</td>
+          </tr>
+          <tr>
+            <td><strong>Saturday</strong></td>
+            <td>Kiting can replace the 40–60 km endurance ride.</td>
+          </tr>
+          <tr>
+            <td><strong>Sunday</strong></td>
+            <td>Occasional kiting is fine, but a hard or long Sunday session may require Monday's intervals to be reduced or skipped.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>When Kiting Becomes Regular</h3>
+      <p>If you are getting <strong>2–3 good kite sessions per week</strong>, reduce the amount of dedicated lower-body gym work rather than continuing two full leg sessions indefinitely.</p>
+      <ul>
+        <li><strong>Tuesday:</strong> retain the more substantial strength and knee-maintenance session.</li>
+        <li><strong>Thursday:</strong> reduce to upper body plus roughly 15–20 minutes of knee/control work.</li>
+        <li>If you have already had several demanding kite sessions that week, Thursday leg work can disappear altogether.</li>
+      </ul>
+
+      <h3>What Counts as a Hard Kite Session?</h3>
+      <p>A powered strapless wave session involving repeated bottom turns, cutbacks, re-entries, airs, hard landings and sustained board loading should be treated as a meaningful lower-body and trunk session.</p>
+
+      <div class="note">
+        <strong>Decision rule:</strong> if you get a proper kite session that day, remove or downgrade another hard lower-body session. The aim is to arrive at the water strong and fresh enough to kite well, while maintaining cycling fitness rather than competing with it.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Weekly Training Logic</h2>
+      <p>
+        <strong>Monday:</strong> hard / punchy cycling<br>
+        <strong>Tuesday:</strong> strength + kite preparation<br>
+        <strong>Wednesday:</strong> aerobic cycling volume<br>
+        <strong>Thursday:</strong> strength + kite preparation<br>
+        <strong>Friday:</strong> sustained cycling quality<br>
+        <strong>Saturday:</strong> endurance<br>
+        <strong>Sunday:</strong> recovery
+      </p>
+    </section>
+
+    <div class="footer">Weekly Training Plan — August 2026</div>
+  </main>
+  <a class="back-to-schedule" href="#training-schedule" aria-label="Back to training schedule" title="Back to training schedule">↑</a>
+</body>
+</html>
