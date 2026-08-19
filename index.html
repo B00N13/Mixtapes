@@ -4,17 +4,174 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mixtapes</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#e9eefc;
+      --muted:#b8c2e6;
+      --border:rgba(255,255,255,.12);
+      --accent:#ff7a18;
+      --accent-soft:rgba(255,122,24,.12);
+      --panel-soft:rgba(255,255,255,.035);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:40px auto;
+      padding:0 20px 40px;
+    }
+
+    .hero{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border-radius:14px;
+      padding:28px 30px;
+      margin-bottom:22px;
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:32px;
+      letter-spacing:.2px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:24px;
+      margin-bottom:20px;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
+
+    h2{
+      margin-top:0;
+      font-size:22px;
+      color:var(--text);
+      padding-bottom:10px;
+      border-bottom:1px solid var(--border);
+    }
+
+    h2::before{
+      content:"";
+      display:inline-block;
+      width:9px;
+      height:9px;
+      margin-right:10px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 3px rgba(255,122,24,.18);
+      vertical-align:2px;
+    }
+
+    .page-link{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      border:1px solid var(--border);
+      background:var(--panel-soft);
+      border-radius:12px;
+      padding:18px 20px;
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+
+    .page-link:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.055);
+      border-color:rgba(255,122,24,.45);
+    }
+
+    .page-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:6px;
+      font-weight:700;
+      font-size:18px;
+      color:var(--text);
+    }
+
+    .page-description{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .tag{
+      display:inline-block;
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,122,24,.3);
+      background:var(--accent-soft);
+      color:#ffab66;
+      font-size:12px;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+
+    .footer{
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      margin-top:28px;
+      opacity:.85;
+    }
+
+    @media(max-width:700px){
+      .wrap{
+        margin:20px auto;
+        padding:0 12px 28px;
+      }
+
+      .hero{
+        padding:22px 20px;
+      }
+
+      .hero h1{
+        font-size:26px;
+      }
+
+      .card{
+        padding:18px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-  <h1>Mixtapes</h1>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Mixtapes</h1>
+      <p>Reference odds and bobs.</p>
+    </section>
 
-  <p>Reference bits and bobs.</p>
+    <section class="card">
+      <h2>Training</h2>
 
-  <ul>
-    <li>
-      <a href="weekly_training_plan_aug_2026_complete.html">Weekly Training Plan</a>
-    </li>
-  </ul>
+      <a class="page-link" href="weekly_training_plan_aug_2026_complete.html">
+        <span class="tag">Training</span>
+        <div class="page-title">Weekly Training Plan</div>
+        <p class="page-description">
+          Current cycling, strength and kitesurf-preparation framework.
+        </p>
+      </a>
+    </section>
+
+    <div class="footer">Mixtapes</div>
+  </main>
 </body>
 </html>
