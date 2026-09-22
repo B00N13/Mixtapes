@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ankle & Hips Program</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#e9eefc;
+      --muted:#b8c2e6;
+      --border:rgba(255,255,255,.12);
+      --accent:#ff7a18;
+      --accent-soft:rgba(255,122,24,.12);
+      --panel-soft:rgba(255,255,255,.035);
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:40px auto;
+      padding:0 20px 40px;
+    }
+
+    .hero{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border-radius:14px;
+      padding:28px 30px;
+      margin-bottom:22px;
+    }
+
+    .hero h1{
+      margin:0 0 8px;
+      font-size:32px;
+      letter-spacing:.2px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+    }
+
+    .hero-meta{
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,122,24,.3);
+      background:var(--accent-soft);
+      color:#ffab66;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:24px;
+      margin-bottom:20px;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
+
+    h2{
+      margin-top:0;
+      font-size:22px;
+      color:var(--text);
+      padding-bottom:10px;
+      border-bottom:1px solid var(--border);
+    }
+
+    h2::before{
+      content:"";
+      display:inline-block;
+      width:9px;
+      height:9px;
+      margin-right:10px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 3px rgba(255,122,24,.18);
+      vertical-align:2px;
+    }
+
+    h3{
+      margin:20px 0 8px;
+      color:var(--text);
+      font-size:17px;
+    }
+
+    p, li{color:var(--muted)}
+    strong{color:var(--text)}
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin-top:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:12px;
+    }
+
+    th,td{
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      vertical-align:top;
+      text-align:left;
+    }
+
+    th{
+      background:rgba(255,255,255,.055);
+      color:var(--text);
+      font-size:13px;
+      letter-spacing:.15px;
+    }
+
+    td{
+      color:var(--muted);
+      background:rgba(255,255,255,.018);
+    }
+
+    td:first-child{
+      color:var(--text);
+    }
+
+    tr:last-child td{border-bottom:none}
+
+    tr.schedule-link{
+      cursor:pointer;
+      transition:background .15s ease;
+    }
+
+    tr.schedule-link:hover td{
+      background:rgba(255,255,255,.045);
+    }
+
+    .exercise-link{
+      color:var(--text);
+      text-decoration:none;
+      display:block;
+    }
+
+    section[id]{scroll-margin-top:20px}
+
+    .prescription{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin:14px 0 4px;
+    }
+
+    .prescription .metric{
+      border:1px solid var(--border);
+      background:var(--panel-soft);
+      border-radius:10px;
+      padding:12px;
+    }
+
+    .metric .label{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:2px;
+      text-transform:uppercase;
+      letter-spacing:.45px;
+    }
+
+    .metric .value{
+      color:var(--text);
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .note{
+      border:1px solid rgba(255,122,24,.28);
+      border-left:4px solid var(--accent);
+      padding:13px 16px;
+      background:var(--accent-soft);
+      border-radius:10px;
+      color:var(--muted);
+      margin-top:14px;
+    }
+
+    .note strong{color:var(--accent)}
+
+    ul{
+      margin-top:8px;
+      padding-left:22px;
+    }
+
+    li{margin-bottom:7px}
+
+    .steps{
+      margin:0;
+      padding-left:22px;
+    }
+
+    .footer{
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      margin-top:28px;
+      opacity:.85;
+    }
+
+    .back-to-summary{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      border:2px solid rgba(255,122,24,.5);
+      background:rgba(18,26,51,.94);
+      color:var(--accent);
+      text-decoration:none;
+      font-size:30px;
+      font-weight:900;
+      line-height:.9;
+      box-shadow:0 7px 20px rgba(0,0,0,.38);
+      backdrop-filter:blur(6px);
+      z-index:1000;
+    }
+
+    .back-to-summary:hover{
+      background:rgba(255,122,24,.14);
+      border-color:var(--accent);
+    }
+
+    @media(max-width:700px){
+      .wrap{
+        margin:20px auto;
+        padding:0 12px 28px;
+      }
+
+      .hero{padding:22px 20px}
+      .hero h1{font-size:26px}
+      .card{padding:18px}
+
+      .prescription{
+        grid-template-columns:1fr;
+      }
+
+      table,thead,tbody,tr,th,td{display:block}
+      thead{display:none}
+      table{border:none}
+
+      tr{
+        border:1px solid var(--border);
+        background:rgba(255,255,255,.02);
+        border-radius:10px;
+        padding:8px 10px;
+        margin-bottom:10px;
+      }
+
+      td{
+        border:none;
+        background:transparent;
+        padding:6px 4px;
+      }
+
+      #program-summary td:before{
+        font-weight:700;
+        display:block;
+        color:var(--text);
+        font-size:12px;
+        margin-bottom:2px;
+      }
+
+      #program-summary td:nth-child(1):before{content:"Exercise"}
+      #program-summary td:nth-child(2):before{content:"Prescription"}
+      #program-summary td:nth-child(3):before{content:"Key note"}
+    }
+
+    @media print{
+      :root{
+        --bg:#ffffff;
+        --card:#ffffff;
+        --text:#111827;
+        --muted:#374151;
+        --border:#e5e7eb;
+        --accent:#f97316;
+        --accent-soft:#fff7ed;
+      }
+
+      body{background:#fff}
+      .back-to-summary{display:none !important}
+
+      .hero,.card{
+        background:#fff !important;
+        box-shadow:none !important;
+      }
+
+      td,th{background:#fff !important}
+
+      .card{
+        break-inside:avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Knee Strength &amp; Stability Program</h1>
+      <p>Physiotherapy lower-limb strengthening and control program — assigned 9 September 2026</p>
+      <div class="hero-meta">
+        <span class="tag">Assigned by Jessica Thompson</span>
+        <span class="tag">PhysiApp code: tcqspung</span>
+      </div>
+    </section>
+
+    <section class="card" id="program-summary">
+      <h2>Program Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Prescription</th>
+            <th>Key note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="schedule-link" onclick="location.hash='wobble-board'">
+            <td><a class="exercise-link" href="#wobble-board"><strong>1. Wobble board plantar / dorsi flexion</strong></a></td>
+            <td>3 sets × 1 minute</td>
+            <td>Smooth forwards/backwards seesaw movement.</td>
+          </tr>
+          <tr class="schedule-link" onclick="location.hash='wall-sit'">
+            <td><a class="exercise-link" href="#wall-sit"><strong>2. Isometric wall sit</strong></a></td>
+            <td>3 sets × 6 reps × 90 sec hold</td>
+            <td>Back and buttocks stay against the wall.</td>
+          </tr>
+          <tr class="schedule-link" onclick="location.hash='single-leg-squat'">
+            <td><a class="exercise-link" href="#single-leg-squat"><strong>3. Eccentric deep single-leg squat</strong></a></td>
+            <td>3 sets × 10 reps</td>
+            <td>Sit to chair on one leg; stand using both legs.</td>
+          </tr>
+          <tr class="schedule-link" onclick="location.hash='bulgarian'">
+            <td><a class="exercise-link" href="#bulgarian"><strong>4. Rear-foot-elevated split squat</strong></a></td>
+            <td>3 sets × 10 reps</td>
+            <td>Additional instruction: 8–10 with support.</td>
+          </tr>
+          <tr class="schedule-link" onclick="location.hash='crab-walks'">
+            <td><a class="exercise-link" href="#crab-walks"><strong>5. Crab walks</strong></a></td>
+            <td>3 sets</td>
+            <td>Band above &amp; below knees — to fatigue.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Prescription note:</strong> this page uses the fully populated values from the updated PhysiApp program. Where the source does not specify a rep count, none has been added.
+      </div>
+    </section>
+
+    <section class="card" id="wobble-board">
+      <h2>1. Ankle Plantar Flexion / Dorsi Flexion — Wobble Board</h2>
+      <div class="prescription">
+        <div class="metric"><span class="label">Sets</span><span class="value">3</span></div>
+        <div class="metric"><span class="label">Duration</span><span class="value">1 min</span></div>
+        <div class="metric"><span class="label">Focus</span><span class="value">Ankle control</span></div>
+      </div>
+
+      <h3>How to do it</h3>
+      <ol class="steps">
+        <li>Stand on a wobble board with your feet hip-width apart.</li>
+        <li>Keep your knees and hips straight as you seesaw the board forwards and backwards.</li>
+        <li>Keep the movement smooth.</li>
+      </ol>
+    </section>
+
+    <section class="card" id="wall-sit">
+      <h2>2. Isometric Wall Sit</h2>
+      <div class="prescription">
+        <div class="metric"><span class="label">Sets</span><span class="value">3</span></div>
+        <div class="metric"><span class="label">Reps</span><span class="value">6</span></div>
+        <div class="metric"><span class="label">Hold</span><span class="value">90 sec</span></div>
+      </div>
+
+      <h3>How to do it</h3>
+      <ol class="steps">
+        <li>Stand upright with a wall behind you.</li>
+        <li>Lean your back and buttocks against the wall, then walk your feet forward.</li>
+        <li>Slide down until your hips and knees reach approximately 90 degrees.</li>
+        <li>Keep your back and buttocks in contact with the wall.</li>
+        <li>Hold the position for the prescribed time.</li>
+      </ol>
+    </section>
+
+    <section class="card" id="single-leg-squat">
+      <h2>3. Eccentric Deep Single-Leg Squat</h2>
+      <div class="prescription">
+        <div class="metric"><span class="label">Sets</span><span class="value">3</span></div>
+        <div class="metric"><span class="label">Reps</span><span class="value">10</span></div>
+        <div class="metric"><span class="label">Focus</span><span class="value">Eccentric control</span></div>
+      </div>
+
+      <h3>How to do it</h3>
+      <ol class="steps">
+        <li>Stand upright with a chair behind you and take a small step away from it.</li>
+        <li>Transfer your weight onto the leg you want to exercise and lift the other leg slightly in front.</li>
+        <li>Look straight ahead, brace your abdominal muscles and keep your back straight.</li>
+        <li>Bend the working knee and push your hips back toward the chair.</li>
+        <li>Keep the knee pointing directly ahead and do not allow it to drop inward.</li>
+        <li>Once seated, lower the raised leg to the floor and stand using both legs.</li>
+        <li>Repeat.</li>
+      </ol>
+    </section>
+
+    <section class="card" id="bulgarian">
+      <h2>4. Split Squat — Rear Foot Elevated (Bulgarian)</h2>
+      <div class="prescription">
+        <div class="metric"><span class="label">Sets</span><span class="value">3</span></div>
+        <div class="metric"><span class="label">Reps</span><span class="value">10</span></div>
+        <div class="metric"><span class="label">Additional instruction</span><span class="value">8–10 with support</span></div>
+      </div>
+
+      <h3>How to do it</h3>
+      <ol class="steps">
+        <li>Stand with your back to the step and place your rear leg onto the step.</li>
+        <li>Create a large distance between your front and back foot.</li>
+        <li>Use a stick behind your shoulders for balance if needed.</li>
+        <li>Bend the front knee and drop your hips straight down toward the ground.</li>
+        <li>Straighten back up.</li>
+        <li>Keep the front knee from moving in front of the front toe and keep the hips moving straight down.</li>
+      </ol>
+
+      <div class="note">
+        <strong>Source wording:</strong> the PhysiApp sheet also says “8–10 with support” as an additional instruction while the populated prescription shows 3 sets × 10 reps.
+      </div>
+    </section>
+
+    <section class="card" id="crab-walks">
+      <h2>5. Resisted Hip Abduction / External Rotation — Crab Walks</h2>
+      <div class="prescription">
+        <div class="metric"><span class="label">Sets</span><span class="value">3</span></div>
+        <div class="metric"><span class="label">Reps</span><span class="value">Not specified</span></div>
+        <div class="metric"><span class="label">Instruction</span><span class="value">To fatigue</span></div>
+      </div>
+
+      <h3>How to do it</h3>
+      <ol class="steps">
+        <li>Stand upright with your feet together.</li>
+        <li>Use resistance bands above and below the knees as prescribed.</li>
+        <li>Engage your deep abdominal muscles throughout.</li>
+        <li>Keep your spine neutral and your knees over your ankles while hinging at the hips.</li>
+        <li>Push your knees apart to create tension in the band and form a diamond shape with your legs.</li>
+        <li>Maintain that position while taking small steps to one side, then the other.</li>
+        <li>Repeat to fatigue.</li>
+      </ol>
+    </section>
+
+    <div class="footer">Knee Strength &amp; Stability Program — September 2026</div>
+  </main>
+
+  <a class="back-to-summary" href="#program-summary" aria-label="Back to program summary" title="Back to program summary">↑</a>
+</body>
+</html>
