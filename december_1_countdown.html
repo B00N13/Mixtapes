@@ -128,11 +128,10 @@
         <div class="label">Full working weeks left</div>
         <div class="value" id="workingWeeks">—</div>
         <div class="unit">complete Mon–Fri weeks remaining</div>
-        <div class="days-secondary">(<span id="daysLeftNumber">—</span> calendar days)</div>
+        <div class="days-secondary">(<span id="daysLeftNumber">—</span> calendar days left)</div>
       </article>
     </section>
 
-    <div class="target" id="targetText"></div>
   </main>
 
   <script>
@@ -234,13 +233,13 @@
 
       if (workingPeriod.status === "during") {
         currentWeekEl.textContent =
-          `${workingPeriod.currentWeek}/${workingPeriod.totalWeeks}`;
+          `${workingPeriod.currentWeek}`;
       } else if (workingPeriod.status === "before") {
         currentWeekEl.textContent =
-          `0/${workingPeriod.totalWeeks}`;
+          `0`;
       } else {
         currentWeekEl.textContent =
-          `${workingPeriod.totalWeeks}/${workingPeriod.totalWeeks}`;
+          `${workingPeriod.totalWeeks}`;
       }
 
       document.getElementById("workingWeeks").textContent =
@@ -248,9 +247,6 @@
 
       document.getElementById("daysLeftNumber").textContent =
         daysLeft;
-
-      document.getElementById("targetText").textContent =
-        `Target date: 1 December ${targetYear}`;
     }
 
     getCountdown();
