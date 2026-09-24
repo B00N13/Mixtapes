@@ -6,108 +6,112 @@
   <title>Countdown to December 1</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --card: #121a33;
-      --text: #eef3ff;
-      --muted: #aeb9d6;
-      --accent: #ff7a18;
-      --border: rgba(255,255,255,.12);
+      --bg:#0b1020;
+      --card:#121a33;
+      --text:#eef3ff;
+      --muted:#aeb9d6;
+      --accent:#ff7a18;
+      --border:rgba(255,255,255,.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing:border-box; }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
         radial-gradient(circle at top, rgba(255,122,24,.10), transparent 35%),
         var(--bg);
-      color: var(--text);
+      color:var(--text);
     }
 
-    .wrap {
-      width: min(760px, 100%);
-    }
+    .wrap { width:min(900px,100%); }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: clamp(2rem, 6vw, 4rem);
-      line-height: 1;
+      margin:0 0 8px;
+      font-size:clamp(2rem,6vw,4rem);
+      line-height:1;
     }
 
     .subtitle {
-      margin: 0 0 28px;
-      color: var(--muted);
-      font-size: 1.05rem;
+      margin:0 0 28px;
+      color:var(--muted);
+      font-size:1.05rem;
     }
 
     .countdown {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
+      min-width:0;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:28px;
     }
 
     .label {
-      color: var(--muted);
-      font-size: .9rem;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      margin-bottom: 8px;
+      color:var(--muted);
+      font-size:.9rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:8px;
     }
 
     .value {
-      font-size: clamp(3rem, 10vw, 6rem);
-      font-weight: 800;
-      line-height: .95;
-      color: var(--accent);
-      font-variant-numeric: tabular-nums;
+      font-size:clamp(3rem,8vw,6rem);
+      font-weight:800;
+      line-height:.95;
+      color:var(--accent);
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+
+    .days-secondary {
+      margin-top:14px;
+      color:var(--accent);
+      font-size:clamp(1.1rem,2.6vw,1.9rem);
+      font-weight:800;
+      line-height:1.05;
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+
+
+    .days-explanation {
+      margin-top:5px;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.45;
     }
 
     .unit {
-      margin-top: 10px;
-      color: var(--text);
-      font-size: 1.1rem;
-    }
-
-    .detail {
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      line-height: 1.6;
+      margin-top:10px;
+      color:var(--text);
+      font-size:1.1rem;
     }
 
     .target {
-      margin-top: 20px;
-      color: var(--muted);
-      font-size: .95rem;
-      text-align: center;
+      margin-top:20px;
+      color:var(--muted);
+      font-size:.95rem;
+      text-align:center;
     }
 
-    @media (max-width: 560px) {
-      .countdown {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 24px;
-      }
+    @media (max-width:700px) {
+      .countdown { grid-template-columns:1fr; }
+      .card { padding:24px; }
     }
   </style>
 </head>
+
 <body>
   <main class="wrap">
     <h1>Countdown to December 1</h1>
@@ -115,16 +119,16 @@
 
     <section class="countdown" aria-live="polite">
       <article class="card">
-        <div class="label">Days left</div>
-        <div class="value" id="days">—</div>
-        <div class="unit">days</div>
+        <div class="label">Current working week</div>
+        <div class="value" id="currentWorkingWeek">—</div>
+        <div class="unit">of the 13-week paid period</div>
       </article>
 
       <article class="card">
-        <div class="label">Weeks left</div>
-        <div class="value" id="weeks">—</div>
-        <div class="unit">weeks</div>
-        <div class="detail" id="weekDetail"></div>
+        <div class="label">Full working weeks left</div>
+        <div class="value" id="workingWeeks">—</div>
+        <div class="unit">complete Mon–Fri weeks remaining</div>
+        <div class="days-secondary">(<span id="daysLeftNumber">—</span> calendar days)</div>
       </article>
     </section>
 
@@ -132,11 +136,75 @@
   </main>
 
   <script>
+    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+    function getMonday(dateUTC) {
+      const date = new Date(dateUTC);
+      const day = date.getUTCDay();
+      const daysSinceMonday = (day + 6) % 7;
+      return new Date(date.getTime() - daysSinceMonday * MS_PER_DAY);
+    }
+
+    function getFullWorkingWeekCount(todayUTC, targetUTC) {
+      const today = new Date(todayUTC);
+      const dayOfWeek = today.getUTCDay();
+
+      let monday;
+
+      if (dayOfWeek === 1) {
+        monday = new Date(todayUTC);
+      } else {
+        const daysUntilMonday = (8 - dayOfWeek) % 7;
+        monday = new Date(todayUTC + daysUntilMonday * MS_PER_DAY);
+      }
+
+      let count = 0;
+
+      while (monday.getTime() < targetUTC) {
+        const fridayUTC = monday.getTime() + 4 * MS_PER_DAY;
+
+        if (fridayUTC < targetUTC) {
+          count++;
+          monday = new Date(monday.getTime() + 7 * MS_PER_DAY);
+        } else {
+          break;
+        }
+      }
+
+      return count;
+    }
+
+    function getWorkingPeriodInfo(todayUTC) {
+      const periodStart = new Date(Date.UTC(2026, 7, 31));
+      const periodEnd = new Date(Date.UTC(2026, 10, 27));
+      const totalWeeks = 13;
+      const today = new Date(todayUTC);
+
+      if (today < periodStart) {
+        return { status:"before", totalWeeks };
+      }
+
+      if (today > periodEnd) {
+        return { status:"after", totalWeeks };
+      }
+
+      const currentMonday = getMonday(todayUTC);
+      const weekNumber =
+        Math.floor(
+          (currentMonday.getTime() - periodStart.getTime()) /
+          (7 * MS_PER_DAY)
+        ) + 1;
+
+      return {
+        status:"during",
+        totalWeeks,
+        currentWeek:Math.max(1, Math.min(totalWeeks, weekNumber))
+      };
+    }
+
     function getCountdown() {
       const now = new Date();
 
-      // Work with calendar dates rather than hours so daylight-saving
-      // changes do not affect the day count.
       const todayUTC = Date.UTC(
         now.getFullYear(),
         now.getMonth(),
@@ -144,35 +212,48 @@
       );
 
       let targetYear = now.getFullYear();
-      let targetUTC = Date.UTC(targetYear, 11, 1); // December = month 11
+      let targetUTC = Date.UTC(targetYear, 11, 1);
 
-      // Once December 1 has passed, count down to December 1 next year.
       if (todayUTC > targetUTC) {
-        targetYear += 1;
+        targetYear++;
         targetUTC = Date.UTC(targetYear, 11, 1);
       }
 
-      const msPerDay = 24 * 60 * 60 * 1000;
-      const daysLeft = Math.round((targetUTC - todayUTC) / msPerDay);
+      const daysLeft = Math.round(
+        (targetUTC - todayUTC) / MS_PER_DAY
+      );
 
-      const fullWeeks = Math.floor(daysLeft / 7);
-      const extraDays = daysLeft % 7;
-      const decimalWeeks = daysLeft / 7;
+      const workingWeeks =
+        getFullWorkingWeekCount(todayUTC, targetUTC);
 
-      document.getElementById("days").textContent = daysLeft;
-      document.getElementById("weeks").textContent = decimalWeeks.toFixed(1);
+      const workingPeriod =
+        getWorkingPeriodInfo(todayUTC);
 
-      document.getElementById("weekDetail").textContent =
-        `${fullWeeks} full week${fullWeeks === 1 ? "" : "s"}`
-        + (extraDays ? ` + ${extraDays} day${extraDays === 1 ? "" : "s"}` : "");
+      const currentWeekEl =
+        document.getElementById("currentWorkingWeek");
+
+      if (workingPeriod.status === "during") {
+        currentWeekEl.textContent =
+          `${workingPeriod.currentWeek}/${workingPeriod.totalWeeks}`;
+      } else if (workingPeriod.status === "before") {
+        currentWeekEl.textContent =
+          `0/${workingPeriod.totalWeeks}`;
+      } else {
+        currentWeekEl.textContent =
+          `${workingPeriod.totalWeeks}/${workingPeriod.totalWeeks}`;
+      }
+
+      document.getElementById("workingWeeks").textContent =
+        workingWeeks;
+
+      document.getElementById("daysLeftNumber").textContent =
+        daysLeft;
 
       document.getElementById("targetText").textContent =
         `Target date: 1 December ${targetYear}`;
     }
 
     getCountdown();
-
-    // Refresh periodically in case the page stays open across midnight.
     setInterval(getCountdown, 60 * 1000);
   </script>
 </body>
