@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Countdown to December 1</title>
+
   <style>
     :root {
       --bg:#0b1020;
@@ -14,7 +15,9 @@
       --border:rgba(255,255,255,.12);
     }
 
-    * { box-sizing:border-box; }
+    * {
+      box-sizing:border-box;
+    }
 
     body {
       margin:0;
@@ -29,7 +32,9 @@
       color:var(--text);
     }
 
-    .wrap { width:min(900px,100%); }
+    .wrap {
+      width:min(900px,100%);
+    }
 
     h1 {
       margin:0 0 8px;
@@ -74,6 +79,12 @@
       white-space:nowrap;
     }
 
+    .unit {
+      margin-top:10px;
+      color:var(--text);
+      font-size:1.1rem;
+    }
+
     .days-secondary {
       margin-top:14px;
       color:var(--accent);
@@ -84,173 +95,579 @@
       white-space:nowrap;
     }
 
-
-    .days-explanation {
-      margin-top:5px;
-      color:var(--muted);
-      font-size:.9rem;
-      line-height:1.45;
+    .week-progress {
+      margin-top:26px;
+      padding:18px 4px 2px;
     }
 
-    .unit {
-      margin-top:10px;
-      color:var(--text);
-      font-size:1.1rem;
-    }
-
-    .target {
-      margin-top:20px;
+    .week-progress-title {
+      margin-bottom:12px;
       color:var(--muted);
-      font-size:.95rem;
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
       text-align:center;
     }
 
+    .week-track {
+      display:grid;
+      grid-template-columns:repeat(13,minmax(0,1fr));
+      gap:7px;
+      align-items:center;
+    }
+
+    .week-segment {
+      height:4px;
+      border-radius:999px;
+      background:rgba(255,255,255,.22);
+    }
+
+    .week-segment.current {
+      height:8px;
+      background:var(--accent);
+      box-shadow:0 0 0 2px rgba(255,122,24,.13);
+    }
+
+    .week-progress-labels {
+      display:flex;
+      justify-content:space-between;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:.75rem;
+    }
+
     @media (max-width:700px) {
-      .countdown { grid-template-columns:1fr; }
-      .card { padding:24px; }
+      .countdown {
+        grid-template-columns:1fr;
+      }
+
+      .card {
+        padding:24px;
+      }
+
+      .week-track {
+        gap:4px;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <main class="wrap">
+
     <h1>Countdown to December 1</h1>
-    <p class="subtitle">Automatically updates from the current date.</p>
+
+    <p class="subtitle">
+      Automatically updates from the current date.
+    </p>
 
     <section class="countdown" aria-live="polite">
-      <article class="card">
-        <div class="label">Current working week</div>
-        <div class="value" id="currentWorkingWeek">—</div>
-        <div class="unit">of the 13-week paid period</div>
-      </article>
 
       <article class="card">
-        <div class="label">Full working weeks left</div>
-        <div class="value" id="workingWeeks">—</div>
-        <div class="unit">complete Mon–Fri weeks remaining</div>
-        <div class="days-secondary">(<span id="daysLeftNumber">—</span> calendar days left)</div>
+        <div class="label">
+          Current working week
+        </div>
+
+        <div
+          class="value"
+          id="currentWorkingWeek"
+        >
+          —
+        </div>
+
+        <div class="unit">
+          of the 13-week paid period
+        </div>
       </article>
+
+
+      <article class="card">
+
+        <div class="label">
+          Full working weeks left
+        </div>
+
+        <div
+          class="value"
+          id="workingWeeks"
+        >
+          —
+        </div>
+
+        <div class="unit">
+          complete Mon–Fri weeks remaining
+        </div>
+
+        <div class="days-secondary">
+          (<span id="daysLeftNumber">—</span> calendar days left)
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <section
+      class="week-progress"
+      aria-label="13-week paid period progress"
+    >
+
+      <div class="week-progress-title">
+        13-week paid period
+      </div>
+
+      <div
+        class="week-track"
+        id="weekTrack"
+      ></div>
+
+      <div class="week-progress-labels">
+        <span>Week 1</span>
+        <span>Week 13</span>
+      </div>
+
     </section>
 
   </main>
 
+
   <script>
-    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+    const MS_PER_DAY =
+      24 * 60 * 60 * 1000;
+
 
     function getMonday(dateUTC) {
-      const date = new Date(dateUTC);
-      const day = date.getUTCDay();
-      const daysSinceMonday = (day + 6) % 7;
-      return new Date(date.getTime() - daysSinceMonday * MS_PER_DAY);
+
+      const date =
+        new Date(dateUTC);
+
+      const day =
+        date.getUTCDay();
+
+      const daysSinceMonday =
+        (day + 6) % 7;
+
+      return new Date(
+        date.getTime()
+        - daysSinceMonday * MS_PER_DAY
+      );
     }
 
-    function getFullWorkingWeekCount(todayUTC, targetUTC) {
-      const today = new Date(todayUTC);
-      const dayOfWeek = today.getUTCDay();
+
+    function getFullWorkingWeekCount(
+      todayUTC,
+      targetUTC
+    ) {
+
+      const today =
+        new Date(todayUTC);
+
+      const dayOfWeek =
+        today.getUTCDay();
 
       let monday;
 
+
+      /*
+        A working week only counts if the
+        complete Monday-Friday block remains.
+
+        If today is Monday, the current week
+        still counts.
+
+        Tuesday-Sunday starts counting from
+        the following Monday.
+      */
+
       if (dayOfWeek === 1) {
-        monday = new Date(todayUTC);
+
+        monday =
+          new Date(todayUTC);
+
       } else {
-        const daysUntilMonday = (8 - dayOfWeek) % 7;
-        monday = new Date(todayUTC + daysUntilMonday * MS_PER_DAY);
+
+        const daysUntilMonday =
+          (8 - dayOfWeek) % 7;
+
+        monday =
+          new Date(
+            todayUTC
+            + daysUntilMonday * MS_PER_DAY
+          );
       }
+
 
       let count = 0;
 
-      while (monday.getTime() < targetUTC) {
-        const fridayUTC = monday.getTime() + 4 * MS_PER_DAY;
 
-        if (fridayUTC < targetUTC) {
+      while (
+        monday.getTime() < targetUTC
+      ) {
+
+        const fridayUTC =
+          monday.getTime()
+          + 4 * MS_PER_DAY;
+
+
+        /*
+          Friday must occur before Dec 1
+          for this to count as a complete
+          working week.
+        */
+
+        if (
+          fridayUTC < targetUTC
+        ) {
+
           count++;
-          monday = new Date(monday.getTime() + 7 * MS_PER_DAY);
+
+          monday =
+            new Date(
+              monday.getTime()
+              + 7 * MS_PER_DAY
+            );
+
         } else {
+
           break;
         }
       }
 
+
       return count;
     }
 
-    function getWorkingPeriodInfo(todayUTC) {
-      const periodStart = new Date(Date.UTC(2026, 7, 31));
-      const periodEnd = new Date(Date.UTC(2026, 10, 27));
-      const totalWeeks = 13;
-      const today = new Date(todayUTC);
 
-      if (today < periodStart) {
-        return { status:"before", totalWeeks };
+    function getWorkingPeriodInfo(
+      todayUTC
+    ) {
+
+      /*
+        Paid period:
+
+        Week 1
+        Mon 31 Aug 2026
+        to
+        Fri 4 Sep 2026
+
+        Week 13
+        Mon 23 Nov 2026
+        to
+        Fri 27 Nov 2026
+      */
+
+      const periodStart =
+        new Date(
+          Date.UTC(
+            2026,
+            7,
+            31
+          )
+        );
+
+      const periodEnd =
+        new Date(
+          Date.UTC(
+            2026,
+            10,
+            27
+          )
+        );
+
+      const totalWeeks =
+        13;
+
+      const today =
+        new Date(todayUTC);
+
+
+      if (
+        today < periodStart
+      ) {
+
+        return {
+          status:"before",
+          totalWeeks
+        };
       }
 
-      if (today > periodEnd) {
-        return { status:"after", totalWeeks };
+
+      if (
+        today > periodEnd
+      ) {
+
+        return {
+          status:"after",
+          totalWeeks
+        };
       }
 
-      const currentMonday = getMonday(todayUTC);
+
+      const currentMonday =
+        getMonday(todayUTC);
+
+
       const weekNumber =
         Math.floor(
-          (currentMonday.getTime() - periodStart.getTime()) /
-          (7 * MS_PER_DAY)
+
+          (
+            currentMonday.getTime()
+            - periodStart.getTime()
+          )
+
+          /
+
+          (
+            7 * MS_PER_DAY
+          )
+
         ) + 1;
 
+
       return {
+
         status:"during",
+
         totalWeeks,
-        currentWeek:Math.max(1, Math.min(totalWeeks, weekNumber))
+
+        currentWeek:
+          Math.max(
+            1,
+            Math.min(
+              totalWeeks,
+              weekNumber
+            )
+          )
       };
     }
 
-    function getCountdown() {
-      const now = new Date();
 
-      const todayUTC = Date.UTC(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-      );
+    function renderWeekProgress(
+      workingPeriod
+    ) {
 
-      let targetYear = now.getFullYear();
-      let targetUTC = Date.UTC(targetYear, 11, 1);
+      const track =
+        document.getElementById(
+          "weekTrack"
+        );
 
-      if (todayUTC > targetUTC) {
-        targetYear++;
-        targetUTC = Date.UTC(targetYear, 11, 1);
+
+      track.innerHTML = "";
+
+
+      let currentWeek =
+        null;
+
+
+      if (
+        workingPeriod.status
+        === "during"
+      ) {
+
+        currentWeek =
+          workingPeriod.currentWeek;
+
+      } else if (
+        workingPeriod.status
+        === "after"
+      ) {
+
+        currentWeek =
+          workingPeriod.totalWeeks;
       }
 
-      const daysLeft = Math.round(
-        (targetUTC - todayUTC) / MS_PER_DAY
-      );
 
-      const workingWeeks =
-        getFullWorkingWeekCount(todayUTC, targetUTC);
+      for (
+        let week = 1;
+        week <= 13;
+        week++
+      ) {
 
-      const workingPeriod =
-        getWorkingPeriodInfo(todayUTC);
+        const segment =
+          document.createElement(
+            "div"
+          );
 
-      const currentWeekEl =
-        document.getElementById("currentWorkingWeek");
 
-      if (workingPeriod.status === "during") {
-        currentWeekEl.textContent =
-          `${workingPeriod.currentWeek}`;
-      } else if (workingPeriod.status === "before") {
-        currentWeekEl.textContent =
-          `0`;
-      } else {
-        currentWeekEl.textContent =
-          `${workingPeriod.totalWeeks}`;
+        segment.className =
+          "week-segment";
+
+
+        segment.setAttribute(
+          "aria-label",
+          `Week ${week}`
+        );
+
+
+        if (
+          week === currentWeek
+        ) {
+
+          segment.classList.add(
+            "current"
+          );
+
+          segment.setAttribute(
+            "aria-current",
+            "step"
+          );
+        }
+
+
+        track.appendChild(
+          segment
+        );
       }
-
-      document.getElementById("workingWeeks").textContent =
-        workingWeeks;
-
-      document.getElementById("daysLeftNumber").textContent =
-        daysLeft;
     }
 
+
+    function getCountdown() {
+
+      const now =
+        new Date();
+
+
+      /*
+        Use UTC calendar dates so the
+        calculation is based on whole dates,
+        not elapsed hours.
+      */
+
+      const todayUTC =
+        Date.UTC(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
+
+
+      let targetYear =
+        now.getFullYear();
+
+
+      let targetUTC =
+        Date.UTC(
+          targetYear,
+          11,
+          1
+        );
+
+
+      /*
+        After Dec 1, automatically move
+        the countdown to Dec 1 next year.
+      */
+
+      if (
+        todayUTC > targetUTC
+      ) {
+
+        targetYear++;
+
+        targetUTC =
+          Date.UTC(
+            targetYear,
+            11,
+            1
+          );
+      }
+
+
+      const daysLeft =
+        Math.round(
+
+          (
+            targetUTC
+            - todayUTC
+          )
+
+          /
+
+          MS_PER_DAY
+        );
+
+
+      const workingWeeks =
+        getFullWorkingWeekCount(
+          todayUTC,
+          targetUTC
+        );
+
+
+      const workingPeriod =
+        getWorkingPeriodInfo(
+          todayUTC
+        );
+
+
+      const currentWeekEl =
+        document.getElementById(
+          "currentWorkingWeek"
+        );
+
+
+      if (
+        workingPeriod.status
+        === "during"
+      ) {
+
+        currentWeekEl.textContent =
+          workingPeriod.currentWeek;
+
+      } else if (
+        workingPeriod.status
+        === "before"
+      ) {
+
+        currentWeekEl.textContent =
+          "0";
+
+      } else {
+
+        currentWeekEl.textContent =
+          workingPeriod.totalWeeks;
+      }
+
+
+      document
+        .getElementById(
+          "workingWeeks"
+        )
+        .textContent =
+          workingWeeks;
+
+
+      document
+        .getElementById(
+          "daysLeftNumber"
+        )
+        .textContent =
+          daysLeft;
+
+
+      renderWeekProgress(
+        workingPeriod
+      );
+    }
+
+
     getCountdown();
-    setInterval(getCountdown, 60 * 1000);
+
+
+    /*
+      Refresh once per minute so a page
+      left open overnight will update
+      automatically after midnight.
+    */
+
+    setInterval(
+      getCountdown,
+      60 * 1000
+    );
+
   </script>
+
 </body>
 </html>
