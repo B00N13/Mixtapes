@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="dark light" name="color-scheme"/>
+<title>BoonDigital | Dev Hub</title>
+<style>
+    :root{font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;color-scheme:dark;--bg:#0b1020;--surface:#151c30;--surface-hover:#1c2842;--border:#303c55;--text:#f1f5ff;--muted:#9ba8c1;--accent:#94bfff;--input:#111a2d}
+    *{box-sizing:border-box}html{min-height:100%;}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#142846 0,transparent 45%),var(--bg);color:var(--text)}
+    main{max-width:1100px;padding:clamp(24px,5vw,64px) 22px 60px;margin:auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:35px;flex-wrap:wrap}
+    .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:750}
+    h1{margin:8px 0 7px;font-size:clamp(30px,5vw,49px);font-weight:750;letter-spacing:-.045em}
+    .sub{margin:0;color:var(--muted);font-size:15px}
+    .search{width:min(100%,310px);padding:13px 15px;border:1px solid var(--border);border-radius:12px;background:var(--input);color:var(--text);font:inherit;outline:none}
+    .search:focus{border-color:var(--accent);box-shadow:0 0 0 3px #94bfff22}
+    /* Compact Google search, above the page title */
+    .google-search{display:flex;align-items:center;gap:7px;width:min(100%,340px);margin:0 0 22px;padding:0;background:none;border:0}
+    .google-search-input{flex:1;min-width:0;height:36px;padding:7px 12px;border:1px solid var(--border);border-radius:9px;background:var(--input);color:var(--text);font:inherit;font-size:13px;outline:none}
+    .google-search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px #94bfff22}
+    .google-search-input::placeholder{color:var(--muted)}
+    .google-search-button{height:36px;border:1px solid var(--border);border-radius:9px;padding:0 12px;background:var(--surface);color:var(--text);cursor:pointer;font:inherit;font-weight:650;font-size:13px;white-space:nowrap}
+    .google-search-button:hover{background:var(--surface-hover);border-color:var(--accent)}
+    .google-search-button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+    section{margin:28px 0 35px}h2{font-size:17px;letter-spacing:-.01em;margin:0 0 15px;display:flex;align-items:center;gap:12px}h2:after{content:"";height:1px;background:var(--border);flex:1}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}
+    .tile{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:19px;min-height:124px;text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:8px;transition:transform .15s ease,border-color .15s ease,background .15s ease;position:relative}
+    .tile:hover,.tile:focus-visible{transform:translateY(-3px);background:var(--surface-hover);border-color:#7894c0;outline:0}
+    .tile .icon{display:inline-grid;place-items:center;width:33px;height:33px;border-radius:9px;background:var(--accent-bg,#253c5d);color:var(--accent-txt,#a7cbff);font-size:17px;font-weight:700}
+    .tile strong{font-size:15px}.tile small{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+    .arrow{position:absolute;top:20px;right:19px;color:var(--muted);font-size:17px}
+    .empty{display:none;color:var(--muted);padding:24px 0}
+    footer{color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:20px;line-height:1.6}
+    kbd{border:1px solid var(--border);border-radius:4px;padding:2px 5px;background:var(--surface)}
+    @media (prefers-color-scheme:light){:root{color-scheme:light;--bg:#f3f6fc;--surface:#fff;--surface-hover:#edf4ff;--border:#d6dfed;--text:#17233a;--muted:#60728e;--accent:#245fba;--input:#fff}body{background:radial-gradient(ellipse at 80% 0%,#e1edff 0,transparent 48%),var(--bg)}}
+    @media (prefers-reduced-motion:reduce){.tile{transition:none}}
+  </style>
+</head>
+<body>
+<main>
+<form action="https://www.google.com/search" aria-label="Google search" class="google-search" method="get" role="search" target="_blank">
+<input aria-label="Search Google" autocomplete="off" class="google-search-input" id="google-query" name="q" placeholder="Search Google…" required="" type="search"/>
+<button aria-label="Search Google" class="google-search-button" type="submit">Search ↗</button>
+</form><header>
+<div>
+<div class="eyebrow">Personal learning workspace</div>
+<h1>BoonDigital <span style="color:var(--accent)">Dev Hub</span></h1>
+<p class="sub">Your Microsoft cloud, Power Platform and data tools in one place.</p>
+</div>
+<input aria-label="Filter links" autocomplete="off" class="search" id="search" placeholder="Filter links… (Ctrl + K)" type="search"/>
+</header>
+
+<section aria-label="Development portals">
+<h2>Development portals</h2>
+<div class="grid">
+<a class="tile" href="https://portal.azure.com" rel="noopener noreferrer" target="_blank"><span class="icon">Az</span><strong>Azure Portal</strong><small>portal.azure.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://entra.microsoft.com" rel="noopener noreferrer" target="_blank"><span class="icon">ID</span><strong>Microsoft Entra ID</strong><small>entra.microsoft.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://admin.powerplatform.microsoft.com" rel="noopener noreferrer" target="_blank"><span class="icon">PP</span><strong>Power Platform Admin</strong><small>admin.powerplatform.microsoft.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://make.powerapps.com" rel="noopener noreferrer" target="_blank"><span class="icon">PA</span><strong>Power Apps</strong><small>make.powerapps.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://make.powerautomate.com" rel="noopener noreferrer" target="_blank"><span class="icon">↻</span><strong>Power Automate</strong><small>make.powerautomate.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://app.powerbi.com" rel="noopener noreferrer" target="_blank"><span class="icon">BI</span><strong>Power BI</strong><small>app.powerbi.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://app.fabric.microsoft.com" rel="noopener noreferrer" target="_blank"><span class="icon">Fb</span><strong>Microsoft Fabric</strong><small>app.fabric.microsoft.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://admin.microsoft.com" rel="noopener noreferrer" target="_blank"><span class="icon">365</span><strong>Microsoft 365 Admin</strong><small>admin.microsoft.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://dev.azure.com" rel="noopener noreferrer" target="_blank"><span class="icon">&lt;/&gt;</span><strong>Azure DevOps</strong><small>dev.azure.com</small><span class="arrow">↗</span></a>
+</div>
+</section>
+<section aria-label="Learning and documentation">
+<h2>Learning &amp; documentation</h2>
+<div class="grid">
+<a class="tile" href="https://learn.microsoft.com" rel="noopener noreferrer" target="_blank"><span class="icon">L</span><strong>Microsoft Learn</strong><small>learn.microsoft.com</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://learn.microsoft.com/en-us/power-platform/" rel="noopener noreferrer" target="_blank"><span class="icon">PP</span><strong>Power Platform Docs</strong><small>learn.microsoft.com/power-platform</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://learn.microsoft.com/en-us/power-bi/" rel="noopener noreferrer" target="_blank"><span class="icon">BI</span><strong>Power BI Docs</strong><small>learn.microsoft.com/power-bi</small><span class="arrow">↗</span></a>
+<a class="tile" href="https://learn.microsoft.com/en-us/fabric/" rel="noopener noreferrer" target="_blank"><span class="icon">Fb</span><strong>Fabric Docs</strong><small>learn.microsoft.com/fabric</small><span class="arrow">↗</span></a>
+</div>
+</section>
+<p class="empty" id="empty">No links match your search.</p>
+<footer>Signed-in experience depends on your Microsoft work account and licences. Links open in a new tab. Tip: press <kbd>Ctrl</kbd> + <kbd>K</kbd> to filter.</footer>
+</main>
+<script>
+  const search = document.getElementById('search');
+  const tiles = [...document.querySelectorAll('.tile')];
+  search.addEventListener('input', () => {
+    const query = search.value.trim().toLowerCase();
+    let shown = 0;
+    for (const tile of tiles) { const match = tile.textContent.toLowerCase().includes(query) || tile.href.toLowerCase().includes(query); tile.hidden = !match; tile.style.display = match ? '' : 'none'; if(match) shown++; }
+    document.getElementById('empty').style.display = shown ? 'none' : 'block';
+    document.querySelectorAll('section').forEach(section => { section.style.display = [...section.querySelectorAll('.tile')].some(x => !x.hidden) ? '' : 'none'; });
+  });
+  document.addEventListener('keydown', event => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==='k') { event.preventDefault(); search.focus(); search.select(); } if(event.key === 'Escape' && document.activeElement === search) { search.value=''; search.dispatchEvent(new Event('input')); search.blur(); } });
+</script>
+</body>
+</html>
